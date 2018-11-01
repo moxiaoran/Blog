@@ -1,1 +1,1 @@
-# Blog
+This is my blog, I use [Hugo](https://gohugo.io) and [blogdown](https://github.com/rstudio/blogdown) to build this site. And the theme is [Coco Enhanced](https://github.com/mtn/cocoa-eh-hugo-theme). And I deployed it by using [Netlify](https://www.netlify.com). 
