@@ -6,10 +6,11 @@ contentdir = "content"
 languageCode = "en-US"
 layoutdir = "layouts"
 publishdir = "public"
-author = "Alexis Tacnet"
+author = "Yifei Liu"
 title = "Cocoa Enhanced"
-disqusshortname = ""
+disqusshortname = "datascience"
 pluralizelisttitles = false
+ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [permalinks]
 blog = "blog/:slug/"
@@ -29,8 +30,12 @@ share = true
 # Share to googleplus, twitter, fb, linkedin by default
 # disable by setting share_on_<social network> = false
 # example: share_on_googleplus = false
+highlightjsCDN = "https://cdn.bootcss.com"
+highlightjsLang = ["r", "yaml"]
+highlightjsTheme = "github"
+progressively = true
 latestpostcount = 5
-github = "example"
+github = "moxiaoran"
 email = "you@example.com"
 linkedin = "john-example-aa80ue8è"
 twitter = "example"
