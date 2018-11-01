@@ -1,0 +1,107 @@
+---
+title: Analyze U.S. Census Data using Tidycensus
+author: Yifei Liu
+date: '2018-11-01'
+slug: analyze-u-s-census-data-using-tidycensus
+categories:
+  - Data Visualization
+tags:
+  - cesus
+  - tidycensus
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+Just fininsh [Tidycensus](https://walkerke.github.io/tidycensus/) class on Datacamp which is called [Analyzing US Census Data in R](https://www.datacamp.com/courses/analyzing-us-census-data-in-r) so I think it will will a great opportunity for me to practice my data visualization skills.
+
+## Show Pennsylvania Median Income 
+
+You need to obtain a API code from [U.S. Census](https://api.census.gov/data/key_signup.html) and set it up in .Rprofile. 
+
+```{r, warning= F, message = F}
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+library(purrr)
+library(shiny)
+library(viridis)
+library(sf)
+library(plotly)
+# devtools::install_github('thomasp85/gganimate')
+library(gganimate)
+# census_api_key(key = "Your API Keys")
+library(ggthemes)
+library(mapview)
+```
+Next we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use [Census Reporter](https://censusreporter.org) to browser different categories of data. 
+
+```{r, warning= F, message = F}
+pa_medianincome <- map_df(2012:2016, function(x){
+  get_acs(geography = "county",
+          variables = c(Median_income = "B19013_001"),
+          state = "PA",
+          survey = "acs1",
+          year = x) %>%
+    mutate(year = x)
+})
+
+pa_medianincome_sim <- pa_medianincome %>%
+  mutate(NAME = str_replace(NAME, " County, Pennsylvania", ""))
+
+g <- ggplot(pa_medianincome_sim, aes(x = estimate, y = reorder(NAME, estimate))) + 
+  geom_errorbarh(aes(xmin = estimate - moe,
+                     xmax = estimate + moe,
+                     frame = year, ids = NAME))
+  geom_point(size = 3, color = "darkgreen", aes(frame = year, ids = NAME))
+ggplotly(g)
+```
+
+# lets take a look of U.S. poverty 
+
+```{r,warning= F, message = F}
+us_pov <- get_acs(geography = "county",
+                  variables = "B17001_002",
+                  summary_var = "B17001_001",
+                  geometry = T, 
+                  shift_geo = T) %>%
+  mutate(pov_pct = 100*(estimate/summary_est))
+
+
+ggplot(us_pov) +
+  geom_sf(aes(fill = pov_pct), color = NA) +
+  scale_fill_viridis(direction = -1) +
+  theme_minimal() +
+  labs(title = "Percentage of Population Live Below Poverty Line",
+       subtitle = "Alaska and Hawaii are being shifted and are not to scale",
+       caption = "Source: 2012-2016 5-year ACS",
+       fill = "% in Poverty")
+
+```
+
+# Philly House Occupied rate
+
+```{r, warning= F, message = F}
+philly_house_pct <- get_acs(geography = "tract",
+                       variables = c(Occupied = "B25002_002"),
+                       summary_var = "B25002_001",
+                       state = "PA",
+                       county = "Philadelphia",
+                       geometry = T,
+                       year = 2016,
+                       cb = F) %>%
+  mutate(Occupied_pct = 100 * estimate / summary_est)
+
+st_erase <- function(x, y) {
+  st_difference(x, st_union(st_combine(y)))
+}
+
+philly_water <- area_water("PA", "Philadelphia", year = 2016, class = "sf")
+philly_house_pct_noriver <- st_erase(philly_house_pct, philly_water)
+mapview(philly_house_pct_noriver, zcol = "Occupied_pct", legend = T)
+```
+
+
+
+
