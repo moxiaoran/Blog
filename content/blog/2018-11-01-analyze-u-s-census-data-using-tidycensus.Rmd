@@ -58,7 +58,9 @@ g <- ggplot(pa_medianincome_sim, aes(x = estimate, y = reorder(NAME, estimate)))
 ggplotly(g)
 ```
 
-# lets take a look of U.S. poverty 
+## lets take a look of U.S. poverty 
+
+
 
 ```{r,warning= F, message = F}
 us_pov <- get_acs(geography = "county",
@@ -67,8 +69,13 @@ us_pov <- get_acs(geography = "county",
                   geometry = T, 
                   shift_geo = T) %>%
   mutate(pov_pct = 100*(estimate/summary_est))
+us_pov
+```
+
+Here it is, the U.S. poverty rate in each counties in U.S. You can use _map_ function to get more year data if you want. But poverty line is around $12,488 for one person and $15,877 for 2 people according to [U.S. Census Bureau](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-thresholds.html) in 2017. I normally don't associated U.S. with the world poverty, but after spend some time read articles from magazine such as Foreign Affairs and read wikipedia. I found out American actually spend a ton of money on [war on poverty](https://en.wikipedia.org/wiki/War_on_Poverty), which program start under president Lyndon B. Johnson in 1964 and cost around **$15 trillion**. And the poverty rate still hover around 10% ~ 15%.  
 
 
+```{r}
 ggplot(us_pov) +
   geom_sf(aes(fill = pov_pct), color = NA) +
   scale_fill_viridis(direction = -1) +
@@ -77,8 +84,8 @@ ggplot(us_pov) +
        subtitle = "Alaska and Hawaii are being shifted and are not to scale",
        caption = "Source: 2012-2016 5-year ACS",
        fill = "% in Poverty")
-
 ```
+
 
 # Philly House Occupied rate
 
