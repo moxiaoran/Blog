@@ -8,7 +8,7 @@ layoutdir = "layouts"
 publishdir = "public"
 author = "Yifei Liu"
 title = "Yifei Liu"
-disqusshortname = "yifeiliu"
+disqusshortname = "yifeiliutemple"
 pluralizelisttitles = false
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
