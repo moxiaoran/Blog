@@ -1,4 +1,4 @@
-baseurl = "https://www.yifeiliutemple.com"
+baseurl = "/"
 theme = "cocoa-eh-hugo-theme"
 builddrafts = true
 canonifyurls = true
@@ -9,7 +9,6 @@ publishdir = "public"
 author = "Yifei Liu"
 title = "Yifei Liu"
 disqusshortname = "datascience"
-googleAnalytics = "UA-128173430-1"
 pluralizelisttitles = false
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
@@ -36,14 +35,27 @@ highlightjsTheme = "github"
 progressively = true
 latestpostcount = 5
 github = "moxiaoran"
-# email = "yifei.liu@temple.edu"
+email = "yifei.liu@temple.edu"
 linkedin = "yifei-liu-36654a82"
 twitter = "moxiaoranying"
-# facebook = "facebook_id"
-instagram = "moxiaoran"
+facebook = "facebook_id"
+instagram = "instagram_id"
+itch_io = "itch_io_id"
 social_banner = "img/banner.png"
+usesmallsummarycard = true
 posts_navigation = true
 # issoHost = "comments.domain.tld:1234"
 # githubRepo = "githubUsername/repositoryName/tree/master"
-# small_banner_logo = false
-
+small_banner_logo = false
+[params.colors]
+# identifier = "#527fc1f"
+# identifier_dark = "#1a3152"
+# trivial = "#6a7a8b"
+# foreground = "#181d2a"
+# background = "#f9f9f9"
+# background_dark = "#282a36"
+# code = "#87a5d2"
+# type = "#97d28b"
+# special = "#ffcb8d"
+# value = "#96c2d7"
+# statement = "#ff8e91"
