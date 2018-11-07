@@ -88,7 +88,7 @@ ggplot(us_pov) +
 
 
 # Philly House Occupied rate
-
+Let's take a loot at house occupied rate in Philadelphia. 
 ```{r, warning= F, message = F}
 philly_house_pct <- get_acs(geography = "tract",
                        variables = c(Occupied = "B25002_002"),
