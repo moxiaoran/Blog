@@ -19,18 +19,7 @@
       <guid>/blog/analyze-u-s-census-data-using-tidycensus/</guid>
       <description>Just fininsh Tidycensus class on Datacamp which is called Analyzing US Census Data in R so I think it will will a great opportunity for me to practice my data visualization skills.
 Show Pennsylvania Median Income You need to obtain a API code from U.S. Census and set it up in .Rprofile.
-library(tidyverse) library(tidycensus) library(ggplot2) library(purrr) library(shiny) library(viridis) library(sf) library(plotly) # devtools::install_github(&amp;#39;thomasp85/gganimate&amp;#39;) library(gganimate) # census_api_key(key = &amp;quot;Your API Keys&amp;quot;) library(ggthemes) library(mapview) Next we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use Census Reporter to browser different categories of data.</description>
-    </item>
-    
-    <item>
-      <title>A small project example : add yours !</title>
-      <link>/projects/small-project/</link>
-      <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/projects/small-project/</guid>
-      <description>Along with Ford Prefect, Dent barely escapes the Earth&amp;rsquo;s destruction as it is demolished to make way for a hyperspace bypass. Arthur spends the next several years, still wearing his dressing gown, helplessly launched from crisis to crisis while trying to straighten out his lifestyle.
- He rather enjoys tea, but seems to have trouble obtaining it in the far reaches of the galaxy.
- In time, he learns how to fly and carves a niche for himself as a sandwich-maker.</description>
+library(tidyverse) library(tidycensus) library(ggplot2) library(purrr) library(dplyr) library(shiny) library(viridis) library(tmap) library(sf) library(plotly) # devtools::install_github(&amp;#39;thomasp85/gganimate&amp;#39;) library(gganimate) # census_api_key(key = &amp;quot;Your API Keys&amp;quot;) library(ggthemes) library(mapview) Next we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use Census Reporter to browser different categories of data.</description>
     </item>
     
     <item>
@@ -45,13 +34,12 @@ I current live in Philadelphia.</description>
     </item>
     
     <item>
-      <title>Projects</title>
-      <link>/projects/projects/</link>
-      <pubDate>Wed, 19 Aug 2015 20:29:37 -0700</pubDate>
+      <title>Resume</title>
+      <link>/resume/</link>
+      <pubDate>Sat, 22 Aug 2015 00:00:00 +0000</pubDate>
       
-      <guid>/projects/projects/</guid>
-      <description>In this theme, it is possible to add sections like a Projects one for example. You can add plenty of articles about your projects and a presentation page that will be displayed before the list. All is modulable, if you don&amp;rsquo;t want something.
-A Hollywood-funded film version, produced and filmed in the UK, was released in April 2005, and radio adaptations of the third, fourth, and fifth novels were broadcast from 2004 to 2005.</description>
+      <guid>/resume/</guid>
+      <description> Resume Skills and Tools  R Github, Markdown, Shell Script  Experience Education </description>
     </item>
     
     <item>
@@ -61,18 +49,6 @@ A Hollywood-funded film version, produced and filmed in the UK, was released in 
       
       <guid>/home/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>License</title>
-      <link>/license/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/license/</guid>
-      <description>You can use this page to put a license on the contents of your blog, like so:
- The MIT License (MIT)
-Copyright &amp;copy; 2015 Nishanth Shanmughamnishanth.gerrard@gmail.com
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &amp;ldquo;Software&amp;rdquo;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</description>
     </item>
     
   </channel>
