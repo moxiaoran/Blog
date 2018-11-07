@@ -7,6 +7,9 @@ title = "Resume"
 
 ## Skills and Tools
 
+- R
+- Github, Markdown, Shell Script
+
 ## Experience
 
 ## Education

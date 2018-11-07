@@ -1,13 +1,13 @@
-baseurl = "/"
+baseurl = "https://www.yifeiliutemple.com"
 theme = "cocoa-eh-hugo-theme"
 builddrafts = true
 canonifyurls = true
+enableEmoji = true
 contentdir = "content"
-languageCode = "en-US"
 layoutdir = "layouts"
 publishdir = "public"
 author = "Yifei Liu"
-title = "Yifei Liu"
+googleAnalytics = "UA-128173430-1"
 disqusshortname = "https-www-yifeiliutemple-com-1"
 pluralizelisttitles = false
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
@@ -18,17 +18,13 @@ blog = "blog/:slug/"
 [params]
 dateform = "Jan 2, 2006"
 dateformfull = "Mon Jan 2 2006 15:04:05 MST"
-description = "Blog by Yifei Liu"
+description = "A Blog by Yifei Liu"
 copyright = "Copyright © 2018 Yifei Liu"
-
 logofile = "img/logo.png"
 faviconfile = "img/logo.png"
 highlightjs = true
 highlightjsVersion = "9.11.0"
 share = true
-# Share to googleplus, twitter, fb, linkedin by default
-# disable by setting share_on_<social network> = false
-# example: share_on_googleplus = false
 highlightjsCDN = "https://cdn.bootcss.com"
 highlightjsLang = ["r", "yaml"]
 highlightjsTheme = "github"
