@@ -89,6 +89,7 @@ ggplot(us_pov) +
 
 # Philly House Occupied rate
 Let's take a loot at house occupied rate in Philadelphia. 
+
 ```{r, warning= F, message = F}
 philly_house_pct <- get_acs(geography = "tract",
                        variables = c(Occupied = "B25002_002"),
@@ -108,6 +109,58 @@ philly_water <- area_water("PA", "Philadelphia", year = 2016, class = "sf")
 philly_house_pct_noriver <- st_erase(philly_house_pct, philly_water)
 mapview(philly_house_pct_noriver, zcol = "Occupied_pct", legend = T)
 ```
+
+
+# Look metro area rent to income 
+
+Largest U.S. metropolitan are is [New York-Newark-Jersey City, NY-NJ-PA](https://en.wikipedia.org/wiki/New_York_metropolitan_area) has population over 20
+millions, we can take a look at its rent to income ratio to see what percentage of income people need to spend on its rent. 
+
+```{r, warning= F, message = F}
+household_income <- get_acs(geography = "tract",
+                        variables = c(income = "B19013_001",
+                                      rent = "B25064_001"),
+                        state = c("NY", "NJ", "PA"),
+                        output = "wide",
+                        geometry = T,
+                        cb = T) 
+
+household_pct <- household_income %>%
+  mutate(rent = 12 * rentE,
+         rent_income = rent/incomeE * 100) %>%
+  select(GEOID, NAME, rent_income)
+  
+
+metros <- core_based_statistical_areas(cb = T) %>%
+  dplyr::filter(GEOID %in% c("10900", "35620", "15380")) %>%
+  select(metro_name = NAME)
+metros_rent <- st_join(household_pct, metros, join = st_within,
+                                 left = FALSE)
+
+
+ggplot(metros_rent, aes(x = rent_income)) +
+  geom_density(position = "identity", alpha = 0.25, aes(fill = metro_name)) +
+  labs(x = "rent to income", y = "Density", legend = "Metropolitan",
+       fill = "Metro") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 6))
+ 
+tm_shape(metros_rent, projection = 26910) +
+  tm_polygons("rent_income",title = "", showNA = TRUE,
+              border.col = "gray50", border.alpha = .3,
+              title = expression("Rent to income")) +
+  tm_facets(by = "metro_name", free.coords = T) +
+  tm_scale_bar(position = c("left", "bottom")) 
+```
+
+
+
+
+
+
+
+
 
 
 
