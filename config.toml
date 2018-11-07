@@ -1,8 +1,7 @@
-baseurl = "https://www.yifeiliutemple.com"
+baseurl = "/"
 theme = "cocoa-eh-hugo-theme"
 builddrafts = true
 canonifyurls = true
-enableEmoji = true
 contentdir = "content"
 languageCode = "en-US"
 layoutdir = "layouts"
