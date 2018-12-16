@@ -17,8 +17,8 @@
       <pubDate>Wed, 28 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/leading-cause-of-death-in-the-united-states/</guid>
-      <description>In this post I want to review the trend of leading causes of deaths in United States. Specially how fast the age adjusted rate decase in each state. The data come from CDC. The main numer I will use in this post in age-adjusted death rates.
-Pacakge and Data library(tidyverse) library(jsonlite) library(fuzzyjoin) library(transformr) # devtools::install_github(&amp;quot;thomasp85/transformr&amp;quot;) library(sf) library(gganimate) library(geofacet) theme_set(theme_minimal()) death_data &amp;lt;- read_csv(&amp;quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&amp;quot;) death_data &amp;lt;- death_data %&amp;gt;% dplyr::rename(year = Year, all_cause = `113 Cause Name`, cause = `Cause Name`, state = State, deaths = Deaths, aadr = `Age-adjusted Death Rate`) death_data_processed &amp;lt;- death_data %&amp;gt;% select(- all_cause) %&amp;gt;% dplyr::filter(!</description>
+      <description>In this post I want to review the trend of leading causes of deaths in United States. Specially how fast the age adjusted rate decase in each state. The data come from CDC. The main variable I try to analysis in this post is age-adjusted death rates.
+Pacakge and Data library(tidyverse) library(jsonlite) library(fuzzyjoin) library(transformr) # devtools::install_github(&amp;quot;thomasp85/transformr&amp;quot;) library(sf) library(gganimate) library(geofacet) library(ggrepel) theme_set(theme_minimal()) death_data &amp;lt;- read_csv(&amp;quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&amp;quot;) death_data &amp;lt;- death_data %&amp;gt;% dplyr::rename(year = Year, all_cause = `113 Cause Name`, cause = `Cause Name`, state = State, deaths = Deaths, aadr = `Age-adjusted Death Rate`) death_data_processed &amp;lt;- death_data %&amp;gt;% select(- all_cause) %&amp;gt;% dplyr::filter(!</description>
     </item>
     
   </channel>

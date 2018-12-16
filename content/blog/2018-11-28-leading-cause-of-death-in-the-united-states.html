@@ -17,9 +17,9 @@ meta_img: /images/image.jpg
 
 
 
-<p>In this post I want to review the trend of leading causes of deaths in United States. Specially how fast the age adjusted rate decase in each state. The data come from <a href="https://data.cdc.gov/NCHS/NCHS-Leading-Causes-of-Death-United-States/bi63-dtpu">CDC</a>. The main numer I will use in this post in <a href="https://health.mo.gov/data/mica/CDP_MICA/AARate.html">age-adjusted death rates</a>.</p>
-<div id="pacakge-and-data" class="section level1">
-<h1>Pacakge and Data</h1>
+<p>In this post I want to review the trend of leading causes of deaths in United States. Specially how fast the age adjusted rate decase in each state. The data come from <a href="https://data.cdc.gov/NCHS/NCHS-Leading-Causes-of-Death-United-States/bi63-dtpu">CDC</a>. The main variable I try to analysis in this post is <a href="https://health.mo.gov/data/mica/CDP_MICA/AARate.html">age-adjusted death rates</a>.</p>
+<div id="pacakge-and-data" class="section level3">
+<h3>Pacakge and Data</h3>
 <pre class="r"><code>library(tidyverse)
 library(jsonlite)
 library(fuzzyjoin)
@@ -27,8 +27,11 @@ library(transformr) # devtools::install_github(&quot;thomasp85/transformr&quot;)
 library(sf)
 library(gganimate)
 library(geofacet)
-theme_set(theme_minimal())</code></pre>
-<pre class="r"><code>death_data &lt;- read_csv(&quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&quot;)
+library(ggrepel)
+
+theme_set(theme_minimal())
+
+death_data &lt;- read_csv(&quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&quot;)
 
 death_data &lt;- death_data %&gt;%
   dplyr::rename(year = Year, 
@@ -38,32 +41,35 @@ death_data &lt;- death_data %&gt;%
                 deaths = Deaths, 
                 aadr = `Age-adjusted Death Rate`)
 
+
 death_data_processed &lt;- death_data %&gt;%
   select(- all_cause) %&gt;%
   dplyr::filter(!cause == &quot;All causes&quot;,
-                !str_detect(state, &quot;United&quot;))
-
-pop_data_2010 &lt;- get_decennial(geography = &quot;state&quot;,
-                          variables = &quot;P001001&quot;,
-                          geometry = T,
-                          year = 2010,
-                          shift_geo = T)
+                !str_detect(state, &quot;United&quot;))</code></pre>
+<p>Since we have the state information, we can use <em>tidycensus</em> packge to obtain spatial file and merge those togher.</p>
+<pre class="r"><code>pop_data_2010 &lt;- get_decennial(geography = &quot;state&quot;,
+                               variables = &quot;P001001&quot;,
+                               geometry = T,
+                               year = 2010,
+                               shift_geo = T)
 
 states &lt;- pop_data_2010 %&gt;%
   select(NAME, geometry) %&gt;%
   setNames(c(&quot;state&quot;, &quot;geometry&quot;))
-
-
 death_data_geo &lt;- merge(states, death_data, by = &quot;state&quot;)</code></pre>
-<div id="basic-summary" class="section level3">
-<h3>Basic Summary</h3>
+</div>
+<div id="explore-the-dataset" class="section level3">
+<h3>Explore the dataset</h3>
 <p>We can take a look at the leading cuase of people death during those years</p>
 <pre class="r"><code>death_data_processed %&gt;%
   group_by(year, cause) %&gt;%
   dplyr::summarise(avg_death = mean(aadr)) %&gt;%
   ggplot(aes(year, avg_death, color = cause)) +
   geom_line() +
-  labs(y = &quot;AADR&quot;)</code></pre>
+  labs(y = &quot;Age Adjusted Death Rate&quot;,
+       subtitle = &quot;per 100,000 population&quot;,
+       x = &quot;&quot;,
+       title = &quot;Leading Cause of Death In U.S. 1999-2016&quot;)</code></pre>
 <p><img src="/blog/2018-11-28-leading-cause-of-death-in-the-united-states_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>death_data %&gt;%
   mutate(year = as.integer(year)) %&gt;%
@@ -81,8 +87,8 @@ death_data_geo &lt;- merge(states, death_data, by = &quot;state&quot;)</code></p
   ease_aes(&#39;linear&#39;)</code></pre>
 <p><img src="/blog/2018-11-28-leading-cause-of-death-in-the-united-states_files/figure-html/unnamed-chunk-3-1.gif" /><!-- --></p>
 </div>
-<div id="visualize-change-in-aadr" class="section level3">
-<h3>Visualize change in AADR</h3>
+<div id="visualize-change-in-age-adjusted-death-rate" class="section level3">
+<h3>Visualize change in age adjusted death rate</h3>
 <p>Aggregated across state and year, see which state death rate increase or decrease</p>
 <pre class="r"><code>death_data_spread &lt;- death_data_processed %&gt;%
   dplyr::mutate(year = paste0(&quot;Y&quot;, year)) %&gt;%
@@ -99,13 +105,13 @@ death_data_spread  %&gt;%
   select(state, current, change) %&gt;%
   ggplot(aes(current, change)) +
   geom_point() +
-  geom_text(aes(label = state), vjust = 1, hjust = 1)</code></pre>
+  geom_text(aes(label = state), vjust = 1, hjust = 1, check_overlap = T)</code></pre>
 <p><img src="/blog/2018-11-28-leading-cause-of-death-in-the-united-states_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>We can visualize the chagne see which place in United State have the highest AADR drop.</p>
 <pre class="r"><code>death_data_spread  %&gt;%
   select(state, change) %&gt;%
-  inner_join(states) %&gt;%
-   ggplot() +
+  inner_join(states, by = &quot;state&quot;) %&gt;%
+  ggplot() +
   geom_sf(aes(fill = change)) +
   coord_sf(crs = 26910) +
   labs(title = &quot;Change of Death Rate&quot;,
@@ -118,7 +124,7 @@ death_data_spread  %&gt;%
   group_by(year, state) %&gt;%
   dplyr::summarise(avg_death = mean(aadr)) %&gt;%
   mutate(year = as.integer(year)) %&gt;%
-  inner_join(states) %&gt;%
+  inner_join(states, by = &quot;state&quot;) %&gt;%
   ggplot() +
   geom_sf(aes(fill = avg_death)) +
   coord_sf(crs = 26910) +
@@ -142,4 +148,12 @@ death_data_spread  %&gt;%
        caption = &quot;@yifeiliu Source: Center for Disease Control and Prevention&quot;)</code></pre>
 <p><img src="/blog/2018-11-28-leading-cause-of-death-in-the-united-states_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
 </div>
+<div id="the-end" class="section level3">
+<h3>The End</h3>
+<p>After visualize the data, we can draw some conclusion.</p>
+<ul>
+<li>the main causes of death are <em>heart disease</em> and <em>cancer</em>.</li>
+<li>age adjusted death rate is decline in all states from 1999 to 2016</li>
+<li>some state age adjusted death rate better the soem other state.</li>
+</ul>
 </div>
