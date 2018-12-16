@@ -55,8 +55,7 @@ death_data_processed &lt;- death_data %&gt;%
 
 states &lt;- pop_data_2010 %&gt;%
   select(NAME, geometry) %&gt;%
-  setNames(c(&quot;state&quot;, &quot;geometry&quot;))
-death_data_geo &lt;- merge(states, death_data, by = &quot;state&quot;)</code></pre>
+  setNames(c(&quot;state&quot;, &quot;geometry&quot;))</code></pre>
 </div>
 <div id="explore-the-dataset" class="section level3">
 <h3>Explore the dataset</h3>

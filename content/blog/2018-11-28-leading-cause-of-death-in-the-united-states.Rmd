@@ -63,7 +63,6 @@ pop_data_2010 <- get_decennial(geography = "state",
 states <- pop_data_2010 %>%
   select(NAME, geometry) %>%
   setNames(c("state", "geometry"))
-death_data_geo <- merge(states, death_data, by = "state")
 ```
 
 
@@ -135,8 +134,8 @@ death_data_spread  %>%
 
 We can visualize the chagne see which place in United State have the highest AADR drop. 
 
-```{r, warning=F}
 
+```{r, warning=F, message=F}
 death_data_spread  %>%
   select(state, change) %>%
   inner_join(states, by = "state") %>%
