@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/blog/data-analysis-on-civil-forfeiture/</loc>
+    <lastmod>2019-01-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/leading-cause-of-death-in-the-united-states/</loc>
     <lastmod>2018-11-28T00:00:00+00:00</lastmod>
   </url>
@@ -24,7 +29,7 @@
   
   <url>
     <loc>/blog/</loc>
-    <lastmod>2018-11-28T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -47,7 +52,7 @@
   
   <url>
     <loc>/categories/data-visualization/</loc>
-    <lastmod>2018-11-28T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -57,7 +62,7 @@
   
   <url>
     <loc>/tags/r/</loc>
-    <lastmod>2018-11-28T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -75,7 +80,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-11-28T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

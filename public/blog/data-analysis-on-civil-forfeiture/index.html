@@ -14,22 +14,22 @@
 <meta property="og:site_name" content="Yifei Liu" />
 <meta property="og:locale" content="en-US" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/tags/r/" />
-<meta property="og:title" content="R" />
-<meta property="twitter:title" content="R">
+<meta property="og:url" content="/blog/data-analysis-on-civil-forfeiture/" />
+<meta property="og:title" content="Data Analysis on Civil Forfeiture" />
+<meta property="twitter:title" content="Data Analysis on Civil Forfeiture">
 
     <meta property="twitter:card" content="summary">
 
-<meta property="og:description" content="">
-<meta property="twitter:description" content="">
+<meta property="og:description" content="Desc">
+<meta property="twitter:description" content="Desc">
 
 <title>
 
 
-     Yifei Liu - R 
+     Yifei Liu - Data Analysis on Civil Forfeiture 
 
 </title>
-<link rel="canonical" href="/tags/r/">
+<link rel="canonical" href="/blog/data-analysis-on-civil-forfeiture/">
 
 
 <style media="screen">
@@ -992,8 +992,6 @@ margin-left: -4%;
 
 
 
-  <link href="/tags/r/index.xml" rel="alternate" type="application/rss+xml" title="Yifei Liu" />
-
 
 </head>
 
@@ -1001,7 +999,7 @@ margin-left: -4%;
 <body>
 
 
-<div class="header header-home column">
+<div class="header column">
 
     <div class="container">
         
@@ -1036,34 +1034,383 @@ margin-left: -4%;
     </div>
 </div>
 
-<div class="main column">
+
+
+
+
+<div class="main post non-narrow zero-top-spacing column">
     <div class="container">
         <div class="content">
-            <div class="posts">
-                <div class="page-heading">Posts about R</div>
-                <ul>
-                    
-                        <li class="post-item">
-    <span class="meta">Nov 28, 2018</span>
-    
-    <a href="/blog/leading-cause-of-death-in-the-united-states/"><span>Leading Cause of Death in the United States</span></a>
-    
-</li>
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
 
-                    
-                        <li class="post-item">
-    <span class="meta">Jan 27, 2019</span>
     
-    <a href="/blog/data-analysis-on-civil-forfeiture/"><span>Data Analysis on Civil Forfeiture</span></a>
+    Data Analysis on Civil Forfeiture
     
-</li>
 
+</div>
+
+                </div>
+                <div class="meta">
+                    <div class="date" title="Sun Jan 27 2019 00:00:00 UTC">Jan 27, 2019</div>
                     
-                </ul>
+                        
+                        <div class="author middot" title="Yifei Liu">Yifei Liu</div>
+                        
+                    
+                    
+                    <div class="reading-time middot">6 minute read</div>
+                    
+                    <div class="tags">
+                        <ul>
+                          
+                            <li class="middot"><a href="/tags/r">R</a> </li>
+                          
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <ul>
+                          
+                            
+                          
+                          
+                            
+                          
+                        </ul>
+                    </div>
+                </div>
             </div>
+            <div class="markdown">
+                
+    
+    
+
+
+<p>I came across one episode of John Oliver called civil forfeiture, I find this topic quite disturbing. <a href="https://en.wikipedia.org/wiki/Asset_forfeiture">Civil Forfeiture Law</a> basically give the law enforcement the right to take and keep asset regardless of the owner’s guilt or innocence. I come across a website called <a href="https://ij.org/report/policing-for-profit/">Policing for Profit</a> which provide data related to this topic. I have been mulling this blog post for a while, here is some result that I find out, let’s take a look at see what’s up!</p>
+<div id="where-is-the-money" class="section level2">
+<h2>Where is the money?</h2>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+theme_set(theme_minimal())
+library(scales)
+library(tigris)
+library(ggthemes)
+library(data.table)
+library(knitr)
+library(transformr) # devtools::install_github(&quot;thomasp85/transformr&quot;)
+library(sf)
+library(gganimate)
+library(geofacet)
+library(ggrepel)
+library(sweep)
+library(timetk)
+library(forecast)
+
+detach(&quot;package:dplyr&quot;, unload=TRUE)
+library(dplyr)</code></pre>
+<pre class="r"><code>civil_forfeiture &lt;- fread(&quot;/Users/yifeiliu/Documents/R/data/EDA/ES_data.csv&quot;)
+
+civil_us &lt;- civil_forfeiture %&gt;%
+  tbl_df() %&gt;%
+  select(SZ_DT, CTRY_CD, ASSET_THRLD_FLG, ASSET_TYP, ASSET_VAL, QK_RLS_IND, STAT_PRIM,SZ_AGCY_CD, SZ_METH, SZ_ST, SZD_FRM_BUSFLG, SHR_CONTRIB_HRS, SHR_IA_EXP, SHR_REQ_PCT, SHR_REQ_TYP, SHR_TYP, SHR_USMS_EXP, OAG_NM) %&gt;% 
+  filter(CTRY_CD == &quot;USA&quot;,
+         SHR_TYP %in% c(&quot;A&quot;, &quot;J&quot;)) %&gt;%
+  select(- CTRY_CD) %&gt;% 
+  mutate(SZ_DT = as.factor(as.character(SZ_DT)),
+         SZ_DT = as.POSIXct(SZ_DT, format = &quot;%Y%m%d&quot;),
+         SZ_DT = as.Date(SZ_DT),
+         year = year(SZ_DT))
+  
+
+# state sf data
+state_sf &lt;- get_acs(geography = &quot;state&quot;, variables = &quot;B25077_001&quot;,
+                       survey = &quot;acs1&quot;, geometry = TRUE, shift_geo = TRUE)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2009</td>
+<td align="right">4647820726</td>
+</tr>
+<tr class="even">
+<td align="right">2010</td>
+<td align="right">5584017512</td>
+</tr>
+<tr class="odd">
+<td align="right">2011</td>
+<td align="right">6736523470</td>
+</tr>
+<tr class="even">
+<td align="right">2012</td>
+<td align="right">7562341203</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="right">2638724680</td>
+</tr>
+<tr class="even">
+<td align="right">2014</td>
+<td align="right">248851725</td>
+</tr>
+</tbody>
+</table>
+<p>Here’s a glance show how many money been forfeited during the last 6 years. We may see a downward trend since 2013, but that’s due to <em>data quality</em> issues, not because civil forfeiture amount actually decline.</p>
+</div>
+<div id="how-many-money-have-been-take-away" class="section level2">
+<h2>How many money have been take away?</h2>
+<p>According to the report from <a href="https://ij.org/report/policing-for-profit/">Police for Profit</a>, the seeds of forfeiture abuse were sown in 1984 due to Congress expanded federal civial forfeuture laws and created <em>financial incentive</em> for law enforcement to forfeit asset. We can take a look at the trend in this dataset.</p>
+<pre class="r"><code># how many case per year
+civil_us %&gt;%
+  count(year) %&gt;%
+  filter(year &lt;= 2013) %&gt;%
+  ggplot(aes(year, n)) +
+  geom_line() +
+  labs(x = &quot;&quot;,
+       y = &quot;# of case&quot;,
+       title = &quot;Annual Forfeiture Case&quot;,
+       caption = &quot;Source: Instutute for Justice&quot;)</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code># how many money per year
+
+civil_us %&gt;%
+  filter(year &lt;= 2013) %&gt;%
+  group_by(year) %&gt;%
+  summarize(forf_total = sum(ASSET_VAL)) %&gt;%
+  filter(!is.na(year)) %&gt;%
+  ggplot(aes(year, forf_total)) +
+  geom_line() +
+  scale_y_continuous(labels = dollar_format(scale = 0.000000001, prefix = &quot;B$&quot;)) +
+  labs(x = &quot;&quot;,
+       y = &quot;&quot;, 
+       title = &quot;Total Forfeiture amount&quot;,
+       caption = &quot;Source: Instutute for Justice&quot;)</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p>We can clearly observe a <em>upward trend</em>, both in case and dollar amount.</p>
+<p>Next we can take a look which state forfeit the most amount of money.</p>
+<pre class="r"><code># which state forfeiture the most amount of money
+
+civil_us %&gt;%
+  mutate(state = fct_lump(SZ_ST, 10)) %&gt;%
+  group_by(state) %&gt;%
+  summarize(for_total = sum(ASSET_VAL, na.rm = T)) %&gt;%
+  ungroup() %&gt;%
+  mutate(state = fct_reorder(state, for_total)) %&gt;%
+  ggplot(aes(state, for_total, fill = state)) +
+  geom_col(show.legend = F) +
+  coord_flip() +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(x = &quot;&quot;,
+       y = &quot;&quot;, 
+       title = &quot;Total Forfeiture amount&quot;,
+       subtitle = &quot;from 1996 - 2013&quot;,
+       caption = &quot;Source: Instutute for Justice&quot;)</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># what type of asset is most common 
+
+civil_us %&gt;%
+  mutate(type = fct_lump(ASSET_TYP, 5)) %&gt;%
+  group_by(type) %&gt;%
+  summarize(asset_total = sum(ASSET_VAL)) %&gt;%
+  mutate(type = fct_reorder(type, asset_total)) %&gt;%
+  ggplot(aes(type, asset_total, fill = type)) +
+  geom_col(show.legend = F) +
+  scale_y_continuous(labels = dollar_format()) +
+  coord_flip() +
+  labs(y = &quot;&quot;, x = &quot;Asset Type&quot;,
+       title = &quot;Which Asset Type is most Common&quot;)</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code># which state confiscated the most amount of money
+
+civil_us %&gt;%
+  group_by(year, SZ_ST) %&gt;%
+  summarize(asset = sum(ASSET_VAL, na.rm = T)) %&gt;%
+  ungroup() %&gt;%
+  mutate(state = fct_lump(SZ_ST, 10),
+         state = fct_reorder(state, asset)) %&gt;%
+  filter(year &lt;= 2013) %&gt;%
+  ggplot(aes(year, asset, fill = state)) +
+  geom_bar(stat = &quot;identity&quot;) +
+  scale_y_continuous(labels = dollar_format(scale = 0.000000001, prefix = &quot;B$&quot;)) +
+  labs(x = &quot;&quot;,
+       y = &quot;&quot;, 
+       title = &quot;Total Forfeiture amount&quot;,
+       caption = &quot;Source: Instutute for Justice&quot;)</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<pre class="r"><code># which state forfeit the most among of money in 2012, the last year we have full data
+
+
+us_2012 &lt;- civil_us %&gt;%
+  mutate(NAME = str_to_title(state.name[match(SZ_ST, state.abb)]),
+         year = as.integer(year)) %&gt;%
+  group_by(NAME, year) %&gt;%
+  summarize(forefit = sum(ASSET_VAL, na.rm = T)) %&gt;%
+  inner_join(state_sf, by = &quot;NAME&quot;)  %&gt;%
+  select(-estimate, - moe, - GEOID) %&gt;%
+  filter(year == 2012)
+
+ggplot() +
+  geom_sf(data = us_2012, aes(fill = forefit), colour = NA) +
+  geom_sf_label(data = head(us_2012[order( - us_2012$forefit), ], 3), aes(label = NAME)) +
+  scale_fill_viridis_c(option  = &quot;viridis&quot;, direction = -1) +
+  theme_minimal() +
+  labs(x = &quot;&quot;, y = &quot;&quot;)+
+  coord_sf(label_graticule = &quot;none&quot;, datum = sf::st_crs(4326))</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<div id="asset-type-and-agency" class="section level3">
+<h3>Asset Type and Agency</h3>
+<p>In John Oliver video, we see the most case is police office forfeit money either by bust into civilian’s house or search people car to find is there any money available. We can take a look into the data, see which department usually get involved, and what type of asset most commonly be forfeited.</p>
+<pre class="r"><code>civil_us %&gt;%
+  na.omit() %&gt;%
+  group_by(year, SHR_TYP) %&gt;%
+  summarize(value = sum(ASSET_VAL)) %&gt;%
+  ggplot(aes(year, value, fill = SHR_TYP)) +
+  scale_y_continuous(labels = dollar_format(scale = 0.000000001, prefix = &quot;B$&quot;)) +
+  geom_col() +
+  labs(x = &quot;&quot;,
+       y = &quot;&quot;,
+       title = &quot;DOJ &quot;)</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>civil_us %&gt;%
+  filter(year &lt;= 2013) %&gt;%
+  mutate(type = fct_lump(ASSET_TYP, 4)) %&gt;%
+  count(type, year) %&gt;%
+  mutate(type = fct_reorder(type, n, sum)) %&gt;%
+  group_by(year) %&gt;%
+  mutate(percent = n / sum(n)) %&gt;%
+  ggplot(aes(year,percent, fill = type)) +
+  geom_area() +
+  scale_y_continuous(labels = percent_format()) +
+  scale_fill_discrete(labels = c(&quot;RP&quot;, &quot;Others&quot;, &quot;RP&quot;, &quot;Vehicles&quot;, &quot;Cash&quot;)) +
+  labs(x = &quot;&quot;, y = &quot;&quot;, 
+       title = &quot;Type of Asset been Forfeiture&quot;,
+       capition = &quot;Source: Instutute for Justice&quot;)+
+  theme_minimal() </code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>civil_us %&gt;%
+  filter(year &lt;= 2013) %&gt;%
+  mutate(agency = fct_lump(SZ_AGCY_CD, 5)) %&gt;%
+  count(agency, year) %&gt;%
+  mutate(agency = fct_reorder(agency, n, sum)) %&gt;%
+  group_by(year) %&gt;%
+  mutate(percent = n / sum(n)) %&gt;%
+  ggplot(aes(year,percent, fill = agency)) +
+  geom_area() +
+  scale_y_continuous(labels = percent_format()) +
+  labs(x = &quot;&quot;, y = &quot;&quot;, 
+       title = &quot;Annual Forfeiture Agency&quot;,
+       capition = &quot;Source: Instutute for Justice&quot;)+
+  theme_minimal() </code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<p>Base on those result, we can say most civil forefeiture case is join department, and most common asset type is cash and DEA get the most amount of money.</p>
+</div>
+<div id="forecasting-what-will-happen-next" class="section level3">
+<h3>Forecasting: What will happen next?</h3>
+<p>I just start a time series class, so I was wondering is it possible to fit a auto.arima model to the dataset and forecast the future.</p>
+<pre class="r"><code>us_ts &lt;- civil_us %&gt;%
+  filter(year &lt;=2012,
+         year &gt;= 1997) %&gt;%
+  mutate(NAME = str_to_title(state.name[match(SZ_ST, state.abb)])) %&gt;%
+  na.omit() %&gt;%
+  group_by(NAME, year) %&gt;%
+  summarize(forefit = sum(ASSET_VAL, na.rm = T)) %&gt;%
+  ungroup() %&gt;%
+  mutate(year = as.Date(&quot;0001-01-01&quot;) + years(year - 1)) %&gt;%
+  nest(-NAME) %&gt;%
+  mutate(ts = map(data, tk_ts, start = 1997, freq = 1))
+
+map_forecast &lt;- us_ts %&gt;%
+  mutate(model = map(ts, auto.arima),
+         forecast = map(model, forecast, h = 6)) %&gt;%
+  unnest(map(forecast, sw_sweep)) %&gt;%
+  inner_join(state_sf, by = &quot;NAME&quot;)
+
+map_forecast %&gt;%
+  ggplot(aes(index, forefit, color = key)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lo.80, ymax = hi.80), alpha = .5) +
+  facet_geo(~ NAME, grid = &quot;us_state_grid2&quot;, label = &quot;name&quot;, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="/blog/2019-01-27-data-analysis-on-civil-forfeiture_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The forecast may be a quiet unclear, here is a <a href="https://d.pr/i/cMPq8J">clear version</a></p>
+</div>
+<div id="reference" class="section level3">
+<h3>Reference:</h3>
+<p><a href="https://ij.org/report/policing-for-profit/">Police for Profit</a></p>
+</div>
+</div>
+
+
+            </div>
+            
+            <br>
+            <div class="share">
+                  
+                  <a href="" class="ssk ssk-facebook"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-twitter"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-google-plus"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-linkedin"></a>
+                  
+            </div>
+            
+            
+            <br>
+            <div class="navigation">
+                
+                <div>
+                    <img class="icon" src="/img/back.svg" alt="back" />
+                    <a href="/blog/leading-cause-of-death-in-the-united-states/">Leading Cause of Death in the United States</a>
+                </div>
+                
+                <div style="width: 100%;"></div>
+                
+            </div>
+            
+            
+            <br>
+            <div class="disqus">
+                <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "https-www-yifeiliutemple-com-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+
+            
+
+            
         </div>
     </div>
 </div>
+
+
+
 <div class="footer column">
     <div class="container">
 
@@ -1185,4 +1532,3 @@ if (!doNotTrack) {
 
 </body>
 </html>
-

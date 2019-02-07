@@ -6,10 +6,19 @@
     <description>Recent content on Yifei Liu</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 28 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 27 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Data Analysis on Civil Forfeiture</title>
+      <link>/blog/data-analysis-on-civil-forfeiture/</link>
+      <pubDate>Sun, 27 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/data-analysis-on-civil-forfeiture/</guid>
+      <description>I came across one episode of John Oliver called civil forfeiture, I find this topic quite disturbing. Civil Forfeiture Law basically give the law enforcement the right to take and keep asset regardless of the owner’s guilt or innocence. I come across a website called Policing for Profit which provide data related to this topic. I have been mulling this blog post for a while, here is some result that I find out, let’s take a look at see what’s up!</description>
+    </item>
     
     <item>
       <title>Leading Cause of Death in the United States</title>

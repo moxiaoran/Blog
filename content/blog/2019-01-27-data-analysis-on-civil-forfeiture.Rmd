@@ -1,0 +1,298 @@
+---
+title: Data Analysis on Civil Forfeiture
+author: Yifei Liu
+date: '2019-01-27'
+slug: data-analysis-on-civil-forfeiture
+categories:
+  - Data Visualization
+tags:
+  - R
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+
+I came across one episode of John Oliver called civil forfeiture, I find this topic quite disturbing. [Civil Forfeiture Law](https://en.wikipedia.org/wiki/Asset_forfeiture) basically give the law enforcement the right to take and keep asset regardless of the owner's guilt or innocence. I come across a website called [Policing for Profit](https://ij.org/report/policing-for-profit/) which provide data related to this topic. I have been mulling this blog post for a while, here is some result that I find out, let's take a look at see what's up!
+
+
+## Where is the money?
+
+
+```{r, message=F, warning=F}
+library(tidyverse)
+library(lubridate)
+theme_set(theme_minimal())
+library(scales)
+library(tigris)
+library(ggthemes)
+library(data.table)
+library(knitr)
+library(transformr) # devtools::install_github("thomasp85/transformr")
+library(sf)
+library(gganimate)
+library(geofacet)
+library(ggrepel)
+library(sweep)
+library(timetk)
+library(forecast)
+
+detach("package:dplyr", unload=TRUE)
+library(dplyr)
+
+
+```
+
+
+
+```{r, message=F, warning=F}
+civil_forfeiture <- fread("/Users/yifeiliu/Documents/R/data/EDA/ES_data.csv")
+
+civil_us <- civil_forfeiture %>%
+  tbl_df() %>%
+  select(SZ_DT, CTRY_CD, ASSET_THRLD_FLG, ASSET_TYP, ASSET_VAL, QK_RLS_IND, STAT_PRIM,SZ_AGCY_CD, SZ_METH, SZ_ST, SZD_FRM_BUSFLG, SHR_CONTRIB_HRS, SHR_IA_EXP, SHR_REQ_PCT, SHR_REQ_TYP, SHR_TYP, SHR_USMS_EXP, OAG_NM) %>% 
+  filter(CTRY_CD == "USA",
+         SHR_TYP %in% c("A", "J")) %>%
+  select(- CTRY_CD) %>% 
+  mutate(SZ_DT = as.factor(as.character(SZ_DT)),
+         SZ_DT = as.POSIXct(SZ_DT, format = "%Y%m%d"),
+         SZ_DT = as.Date(SZ_DT),
+         year = year(SZ_DT))
+  
+
+# state sf data
+state_sf <- get_acs(geography = "state", variables = "B25077_001",
+                       survey = "acs1", geometry = TRUE, shift_geo = TRUE)
+
+
+
+  
+```
+
+
+```{r, echo=FALSE}
+civil_annual <- civil_us %>%
+  group_by(year) %>%
+  summarize(Total = sum(ASSET_VAL, na.rm = T)) %>%
+  na.omit()
+
+kable(tail(civil_annual))
+```
+
+Here's a glance show how many money been forfeited during the last 6 years. We may see a downward trend since 2013, but that's due to *data quality* issues, not because civil forfeiture amount actually decline. 
+
+
+
+## How many money have been take away?
+
+According to the report from [Police for Profit](https://ij.org/report/policing-for-profit/), the seeds of forfeiture abuse were sown in 1984 due to Congress expanded federal civial forfeuture laws and created *financial incentive* for law enforcement to forfeit asset. We can take a look at the trend in this dataset. 
+
+
+```{r}
+# how many case per year
+civil_us %>%
+  count(year) %>%
+  filter(year <= 2013) %>%
+  ggplot(aes(year, n)) +
+  geom_line() +
+  labs(x = "",
+       y = "# of case",
+       title = "Annual Forfeiture Case",
+       caption = "Source: Instutute for Justice")
+
+# how many money per year
+
+civil_us %>%
+  filter(year <= 2013) %>%
+  group_by(year) %>%
+  summarize(forf_total = sum(ASSET_VAL)) %>%
+  filter(!is.na(year)) %>%
+  ggplot(aes(year, forf_total)) +
+  geom_line() +
+  scale_y_continuous(labels = dollar_format(scale = 0.000000001, prefix = "B$")) +
+  labs(x = "",
+       y = "", 
+       title = "Total Forfeiture amount",
+       caption = "Source: Instutute for Justice")
+
+```
+
+We can clearly observe a *upward trend*, both in case and dollar amount. 
+
+
+Next we can take a look which state forfeit the most amount of money. 
+
+```{r}
+# which state forfeiture the most amount of money
+
+civil_us %>%
+  mutate(state = fct_lump(SZ_ST, 10)) %>%
+  group_by(state) %>%
+  summarize(for_total = sum(ASSET_VAL, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(state = fct_reorder(state, for_total)) %>%
+  ggplot(aes(state, for_total, fill = state)) +
+  geom_col(show.legend = F) +
+  coord_flip() +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(x = "",
+       y = "", 
+       title = "Total Forfeiture amount",
+       subtitle = "from 1996 - 2013",
+       caption = "Source: Instutute for Justice")
+
+
+
+
+# what type of asset is most common 
+
+civil_us %>%
+  mutate(type = fct_lump(ASSET_TYP, 5)) %>%
+  group_by(type) %>%
+  summarize(asset_total = sum(ASSET_VAL)) %>%
+  mutate(type = fct_reorder(type, asset_total)) %>%
+  ggplot(aes(type, asset_total, fill = type)) +
+  geom_col(show.legend = F) +
+  scale_y_continuous(labels = dollar_format()) +
+  coord_flip() +
+  labs(y = "", x = "Asset Type",
+       title = "Which Asset Type is most Common")
+  
+
+
+# which state confiscated the most amount of money
+
+civil_us %>%
+  group_by(year, SZ_ST) %>%
+  summarize(asset = sum(ASSET_VAL, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(state = fct_lump(SZ_ST, 10),
+         state = fct_reorder(state, asset)) %>%
+  filter(year <= 2013) %>%
+  ggplot(aes(year, asset, fill = state)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = dollar_format(scale = 0.000000001, prefix = "B$")) +
+  labs(x = "",
+       y = "", 
+       title = "Total Forfeiture amount",
+       caption = "Source: Instutute for Justice")
+  
+# which state forfeit the most among of money in 2012, the last year we have full data
+
+
+us_2012 <- civil_us %>%
+  mutate(NAME = str_to_title(state.name[match(SZ_ST, state.abb)]),
+         year = as.integer(year)) %>%
+  group_by(NAME, year) %>%
+  summarize(forefit = sum(ASSET_VAL, na.rm = T)) %>%
+  inner_join(state_sf, by = "NAME")  %>%
+  select(-estimate, - moe, - GEOID) %>%
+  filter(year == 2012)
+
+ggplot() +
+  geom_sf(data = us_2012, aes(fill = forefit), colour = NA) +
+  geom_sf_label(data = head(us_2012[order( - us_2012$forefit), ], 3), aes(label = NAME)) +
+  scale_fill_viridis_c(option  = "viridis", direction = -1) +
+  theme_minimal() +
+  labs(x = "", y = "")+
+  coord_sf(label_graticule = "none", datum = sf::st_crs(4326))
+
+```
+
+
+
+### Asset Type and Agency
+
+In John Oliver video, we see the most case is police office forfeit money either by bust into civilian's house or search people car to find is there any money available. We can take a look into the data, see which department usually get involved, and what type of asset most commonly be forfeited. 
+
+```{r}
+
+civil_us %>%
+  na.omit() %>%
+  group_by(year, SHR_TYP) %>%
+  summarize(value = sum(ASSET_VAL)) %>%
+  ggplot(aes(year, value, fill = SHR_TYP)) +
+  scale_y_continuous(labels = dollar_format(scale = 0.000000001, prefix = "B$")) +
+  geom_col() +
+  labs(x = "",
+       y = "",
+       title = "DOJ ")
+
+civil_us %>%
+  filter(year <= 2013) %>%
+  mutate(type = fct_lump(ASSET_TYP, 4)) %>%
+  count(type, year) %>%
+  mutate(type = fct_reorder(type, n, sum)) %>%
+  group_by(year) %>%
+  mutate(percent = n / sum(n)) %>%
+  ggplot(aes(year,percent, fill = type)) +
+  geom_area() +
+  scale_y_continuous(labels = percent_format()) +
+  scale_fill_discrete(labels = c("RP", "Others", "RP", "Vehicles", "Cash")) +
+  labs(x = "", y = "", 
+       title = "Type of Asset been Forfeiture",
+       capition = "Source: Instutute for Justice")+
+  theme_minimal() 
+
+
+
+civil_us %>%
+  filter(year <= 2013) %>%
+  mutate(agency = fct_lump(SZ_AGCY_CD, 5)) %>%
+  count(agency, year) %>%
+  mutate(agency = fct_reorder(agency, n, sum)) %>%
+  group_by(year) %>%
+  mutate(percent = n / sum(n)) %>%
+  ggplot(aes(year,percent, fill = agency)) +
+  geom_area() +
+  scale_y_continuous(labels = percent_format()) +
+  labs(x = "", y = "", 
+       title = "Annual Forfeiture Agency",
+       capition = "Source: Instutute for Justice")+
+  theme_minimal() 
+
+```
+
+Base on those result, we can say most civil forefeiture case is join department, and most common asset type is cash and DEA get the most amount of money. 
+
+
+### Forecasting: What will happen next?
+
+I just start a time series class, so I was wondering is it possible to fit a auto.arima model to the dataset and forecast the future. 
+
+```{r, warning=F, message=F}
+us_ts <- civil_us %>%
+  filter(year <=2012,
+         year >= 1997) %>%
+  mutate(NAME = str_to_title(state.name[match(SZ_ST, state.abb)])) %>%
+  na.omit() %>%
+  group_by(NAME, year) %>%
+  summarize(forefit = sum(ASSET_VAL, na.rm = T)) %>%
+  ungroup() %>%
+  mutate(year = as.Date("0001-01-01") + years(year - 1)) %>%
+  nest(-NAME) %>%
+  mutate(ts = map(data, tk_ts, start = 1997, freq = 1))
+
+map_forecast <- us_ts %>%
+  mutate(model = map(ts, auto.arima),
+         forecast = map(model, forecast, h = 6)) %>%
+  unnest(map(forecast, sw_sweep)) %>%
+  inner_join(state_sf, by = "NAME")
+
+map_forecast %>%
+  ggplot(aes(index, forefit, color = key)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lo.80, ymax = hi.80), alpha = .5) +
+  facet_geo(~ NAME, grid = "us_state_grid2", label = "name", scales = "free_y")
+
+```
+
+
+The forecast may be a quiet unclear, here is a [clear version](https://d.pr/i/cMPq8J)
+
+
+
+
+### Reference:
+[Police for Profit](https://ij.org/report/policing-for-profit/)
