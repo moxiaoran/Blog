@@ -47,9 +47,10 @@ library(tidyverse) library(tidycensus) library(ggplot2) library(purrr) library(d
       <pubDate>Sat, 22 Aug 2015 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>My name is Yifei Liu. I&amp;rsquo;m interest in Data Visulation, Government, Financial Engineer, anime, and R.
-I&amp;rsquo;m currently a student at Temple Universtiy Fox School major in Financial Analyst and Risk Management. I will graduate in 2019.
-I current live in Philadelphia.</description>
+      <description>I&amp;rsquo;m Yifei Liu and I want to be a Data Analyst. I like making interesting charts, quality of government, Financial Engineer, anime, and R.
+I&amp;rsquo;m currently a student at Temple Universtiy Fox School major in Financial Analyst and Risk Management. I will graduate in 2019. You can find me on Twitter, Github and linkedin
+I current live in Philadelphia.
+My blog posts are released under a Creative Commons Attribution-ShareAlike 4.0 International License</description>
     </item>
     
     <item>
@@ -58,7 +59,8 @@ I current live in Philadelphia.</description>
       <pubDate>Sat, 22 Aug 2015 00:00:00 +0000</pubDate>
       
       <guid>/resume/</guid>
-      <description> Resume Skills and Tools  R Github, Markdown, Shell Script  Experience Education </description>
+      <description>Resume Core Competencies Modeling Able to apply sophisticated mathematics to understanding data. Proficient in the modern machine learning toolkit, including supervised and unsupervised learning techniques. Also have basic understanding of other common technically analsis toolkit such as survival analysis and time series analysis.
+Skills and Tools  R, Python, Matlab Github, Markdown, Shell Script Excel, Bloomberg, CapitalIQ CFA level II Candidate FRM level II Candidate  Experience Financial Analyst, Bank of China Fuxin Branch, Fuxin, China June 2016 – April 2017</description>
     </item>
     
     <item>
