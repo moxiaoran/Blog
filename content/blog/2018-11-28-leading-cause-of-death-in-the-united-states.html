@@ -17,9 +17,7 @@ meta_img: /images/image.jpg
 
 
 
-<p>In this post I want to review the trend of leading causes of deaths in United States. Specially how fast the age adjusted rate decase in each state. The data come from <a href="https://data.cdc.gov/NCHS/NCHS-Leading-Causes-of-Death-United-States/bi63-dtpu">CDC</a>. The main variable I try to analysis in this post is <a href="https://health.mo.gov/data/mica/CDP_MICA/AARate.html">age-adjusted death rates</a>.</p>
-<div id="pacakge-and-data" class="section level3">
-<h3>Pacakge and Data</h3>
+<p>In this post, I want to review the trend of leading causes of deaths in US. Especially how fast the age-adjusted rate decrease in each state. The data come from the <a href="https://data.cdc.gov/NCHS/NCHS-Leading-Causes-of-Death-United-States/bi63-dtpu">CDC</a>. The main variable I try to analysis in this post is <a href="https://health.mo.gov/data/mica/CDP_MICA/AARate.html">age-adjusted death rates</a>.</p>
 <pre class="r"><code>library(tidyverse)
 library(jsonlite)
 library(fuzzyjoin)
@@ -28,7 +26,6 @@ library(sf)
 library(gganimate)
 library(geofacet)
 library(ggrepel)
-
 theme_set(theme_minimal())
 
 death_data &lt;- read_csv(&quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&quot;)
@@ -46,7 +43,7 @@ death_data_processed &lt;- death_data %&gt;%
   select(- all_cause) %&gt;%
   dplyr::filter(!cause == &quot;All causes&quot;,
                 !str_detect(state, &quot;United&quot;))</code></pre>
-<p>Since we have the state information, we can use <em>tidycensus</em> packge to obtain spatial file and merge those togher.</p>
+<p>We can use <em>tidycensus</em> packge to obtain spatial file and merge those togher.</p>
 <pre class="r"><code>pop_data_2010 &lt;- get_decennial(geography = &quot;state&quot;,
                                variables = &quot;P001001&quot;,
                                geometry = T,
@@ -56,10 +53,9 @@ death_data_processed &lt;- death_data %&gt;%
 states &lt;- pop_data_2010 %&gt;%
   select(NAME, geometry) %&gt;%
   setNames(c(&quot;state&quot;, &quot;geometry&quot;))</code></pre>
-</div>
 <div id="explore-the-dataset" class="section level3">
 <h3>Explore the dataset</h3>
-<p>We can take a look at the leading cuase of people death during those years</p>
+<p>We can take a look at the leading cuase of people death during those years.</p>
 <pre class="r"><code>death_data_processed %&gt;%
   group_by(year, cause) %&gt;%
   dplyr::summarise(avg_death = mean(aadr)) %&gt;%

@@ -17,7 +17,7 @@
       <pubDate>Sun, 27 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/blog/data-analysis-on-civil-forfeiture/</guid>
-      <description>I came across one episode of John Oliver called civil forfeiture, I find this topic quite disturbing. Civil Forfeiture Law basically give the law enforcement the right to take and keep asset regardless of the owner’s guilt or innocence. I come across a website called Policing for Profit which provide data related to this topic. I have been mulling this blog post for a while, here is some result that I find out, let’s take a look at see what’s up!</description>
+      <description>I came across one episode of John Oliver called civil forfeiture, I find this topic quite disturbing. Civil Forfeiture Law basically gives the law enforcement the right to take and keep asset regardless of the owner’s guilt or innocence. I come across a website called Policing for Profit which provide data related to this topic. I have been mulling this blog post for a while, here is some result that I find out, let’s take a look at see what’s up!</description>
     </item>
     
     <item>
@@ -26,8 +26,8 @@
       <pubDate>Wed, 28 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/leading-cause-of-death-in-the-united-states/</guid>
-      <description>In this post I want to review the trend of leading causes of deaths in United States. Specially how fast the age adjusted rate decase in each state. The data come from CDC. The main variable I try to analysis in this post is age-adjusted death rates.
-Pacakge and Data library(tidyverse) library(jsonlite) library(fuzzyjoin) library(transformr) # devtools::install_github(&amp;quot;thomasp85/transformr&amp;quot;) library(sf) library(gganimate) library(geofacet) library(ggrepel) theme_set(theme_minimal()) death_data &amp;lt;- read_csv(&amp;quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&amp;quot;) death_data &amp;lt;- death_data %&amp;gt;% dplyr::rename(year = Year, all_cause = `113 Cause Name`, cause = `Cause Name`, state = State, deaths = Deaths, aadr = `Age-adjusted Death Rate`) death_data_processed &amp;lt;- death_data %&amp;gt;% select(- all_cause) %&amp;gt;% dplyr::filter(!</description>
+      <description>In this post, I want to review the trend of leading causes of deaths in US. Especially how fast the age-adjusted rate decrease in each state. The data come from the CDC. The main variable I try to analysis in this post is age-adjusted death rates.
+library(tidyverse) library(jsonlite) library(fuzzyjoin) library(transformr) # devtools::install_github(&amp;quot;thomasp85/transformr&amp;quot;) library(sf) library(gganimate) library(geofacet) library(ggrepel) theme_set(theme_minimal()) death_data &amp;lt;- read_csv(&amp;quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&amp;quot;) death_data &amp;lt;- death_data %&amp;gt;% dplyr::rename(year = Year, all_cause = `113 Cause Name`, cause = `Cause Name`, state = State, deaths = Deaths, aadr = `Age-adjusted Death Rate`) death_data_processed &amp;lt;- death_data %&amp;gt;% select(- all_cause) %&amp;gt;% dplyr::filter(!</description>
     </item>
     
   </channel>

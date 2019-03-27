@@ -1,5 +1,5 @@
 +++
-date = "2015-08-22"
+date = "2019-03-27"
 title = "Resume"
 +++
 
@@ -9,7 +9,7 @@ title = "Resume"
 
 ### Modeling
 
-Able to apply sophisticated mathematics to understanding data. Proficient in the modern machine learning toolkit, including supervised and unsupervised learning techniques. Also have basic understanding of other common technically analsis toolkit such as survival analysis and time series analysis. 
+Able to apply statistical techniques and modeling skills to analyze real word messy dataset. Able to use modern machine learning toolkit, including supervised and unsupervised learning techniques. Also, have a basic understanding of other common technically analysis toolkits such as survival analysis and time series analysis. 
 
 ## Skills and Tools
 
@@ -44,13 +44,15 @@ May 2014 – August  2014
 - Conducted financial ratios and cash flow analyses by using R and Excel based on financial statements to analyze liquidity , operation capability, and profitability of waterworks at each district and county in Liaoning, and decided to lease hydraulic equipment to Dalian Qingpu Drinking Water Treatment Co., Ltd.
 
 
-### Participant, Temple University, STAT 0872 Statistics Reason & Chance, Philadelphia, PA
+### Financial Analyst Intern, Bank of China Fuxin Branch, ShengYang, China
 
-February 2014 – April 2014
+May 2014 – August 2014
 
-- Researched statistics concerning distribution of students’ spending by asking targeted questions to obtain information
-- Conducted research on a randomized student population
-- Evaluated, analyzed and reported data using Excel and R
+- Performed economic, industry, and financial analyses for an investment project of a financial leasing company
+
+- Analyzed macroeconomic data, such as market demand and consumption growth rate, and helped project manager to select water infrastructure industry as first industry in China to invest in due to expected promising revenue growth
+
+- Conducted financial ratios and cash flow analyses by using R and Excel based on financial statements to analyze liquidity , operation capability, and profitability of waterworks at each district and county in Liaoning, and decided to lease hydraulic equipment to Dalian Qingpu Drinking Water Treatment Co., Ltd.
 
 
 ## Education

@@ -13,7 +13,7 @@ tags:
 categories: Data Visualization
 ---
 
-Just fininsh [Tidycensus](https://walkerke.github.io/tidycensus/) class on Datacamp which is called [Analyzing US Census Data in R](https://www.datacamp.com/courses/analyzing-us-census-data-in-r) so I think it will will a great opportunity for me to practice my data visualization skills.
+Just fininsh [Tidycensus](https://walkerke.github.io/tidycensus/) class on Datacamp which is called [Analyzing US Census Data in R](https://www.datacamp.com/courses/analyzing-us-census-data-in-r) so I think now it's a great opportunity to practice data analytical skills by analyzing data from US census. 
 
 ## Show Pennsylvania Median Income 
 
@@ -30,13 +30,15 @@ library(viridis)
 library(tmap)
 library(sf)
 library(plotly)
+library(knitr)
+library(kableExtra)
 # devtools::install_github('thomasp85/gganimate')
 library(gganimate)
 # census_api_key(key = "Your API Keys")
 library(ggthemes)
 library(mapview)
 ```
-Next we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use [Census Reporter](https://censusreporter.org) to browser different categories of data. 
+Next, we need to find median income data, you can use _load_variables_ function to find the variables name that you want to find, you can also use [Census Reporter](https://censusreporter.org) to browser different categories of data. 
 
 ```{r, warning= F, message = F}
 pa_medianincome <- map_df(2012:2016, function(x){
@@ -59,8 +61,7 @@ g <- ggplot(pa_medianincome_sim, aes(x = estimate, y = reorder(NAME, estimate)))
 ggplotly(g)
 ```
 
-## lets take a look of U.S. poverty 
-
+## Take a look of U.S. poverty 
 
 
 ```{r,warning= F, message = F}
@@ -70,10 +71,8 @@ us_pov <- get_acs(geography = "county",
                   geometry = T, 
                   shift_geo = T) %>%
   mutate(pov_pct = 100*(estimate/summary_est))
-us_pov
 ```
-
-Here it is, the U.S. poverty rate in each counties in U.S. You can use _map_ function to get more year data if you want. But poverty line is around $12,488 for one person and $15,877 for 2 people according to [U.S. Census Bureau](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-thresholds.html) in 2017. I normally don't associated U.S. with the world poverty, but after spend some time read articles from magazine such as Foreign Affairs and read wikipedia. I found out American actually spend a ton of money on [war on poverty](https://en.wikipedia.org/wiki/War_on_Poverty), which program start under president Lyndon B. Johnson in 1964 and cost around **$15 trillion**. And the poverty rate still hover around 10% ~ 15%.  
+Here it is, the U.S. poverty rate in each counties in US You can use _map_ function to get more year data if you want. But poverty line is around $12,488 for one person and $15,877 for 2 people according to [U.S. Census Bureau](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-poverty-thresholds.html) in 2017. I normally don't associated U.S. with the world poverty, but after spend some time read articles from magazine such as Foreign Affairs and read wikipedia. I found out American actually spend a ton of money on [war on poverty](https://en.wikipedia.org/wiki/War_on_Poverty), which program start under US President Lyndon B. Johnson in 1964 and cost around **$15 trillion**. And the poverty rate still hover around 10% ~ 15%.  
 
 
 ```{r}
@@ -114,8 +113,9 @@ mapview(philly_house_pct_noriver, zcol = "Occupied_pct", legend = T)
 
 
 ## Metropolitan area rent to income ratio
+
 Largest U.S. metropolitan are is [New York-Newark-Jersey City, NY-NJ-PA](https://en.wikipedia.org/wiki/New_York_metropolitan_area) has population over 20
-millions, we can take a look at its rent to income ratio to see what percentage of income people need to spend on its rent. 
+million, we can take a look at its rent to income ratio to see what percentage of income people need to spend on its rent. 
 
 ```{r, warning= F, message = F}
 household_income <- get_acs(geography = "tract",
@@ -139,8 +139,7 @@ metros_rent <- st_join(household_pct, metros, join = st_within,
                                  left = FALSE)
 head(metros_rent)
 ```
-
-Now we can explore metropolitan area. We can take a look at kernal density plot of median gross income rent. 
+Now we can explore the metropolitan area. We can take a look at kernel density plot of median gross income rent. 
 
 ```{r, warning= F, message = F}
 ggplot(metros_rent, aes(x = rent_income)) +
@@ -154,6 +153,7 @@ ggplot(metros_rent, aes(x = rent_income)) +
 ```
 
 We can also feature geometry as well, we can use _tmap_ to make faceted map. 
+
 ```{r, warning= F, message = F}
 tm_shape(metros_rent, projection = 26910) +
   tm_polygons("rent_income",title = "", showNA = TRUE,

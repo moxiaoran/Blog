@@ -17,8 +17,8 @@
       <pubDate>Wed, 28 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/leading-cause-of-death-in-the-united-states/</guid>
-      <description>In this post I want to review the trend of leading causes of deaths in United States. Specially how fast the age adjusted rate decase in each state. The data come from CDC. The main variable I try to analysis in this post is age-adjusted death rates.
-Pacakge and Data library(tidyverse) library(jsonlite) library(fuzzyjoin) library(transformr) # devtools::install_github(&amp;quot;thomasp85/transformr&amp;quot;) library(sf) library(gganimate) library(geofacet) library(ggrepel) theme_set(theme_minimal()) death_data &amp;lt;- read_csv(&amp;quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&amp;quot;) death_data &amp;lt;- death_data %&amp;gt;% dplyr::rename(year = Year, all_cause = `113 Cause Name`, cause = `Cause Name`, state = State, deaths = Deaths, aadr = `Age-adjusted Death Rate`) death_data_processed &amp;lt;- death_data %&amp;gt;% select(- all_cause) %&amp;gt;% dplyr::filter(!</description>
+      <description>In this post, I want to review the trend of leading causes of deaths in US. Especially how fast the age-adjusted rate decrease in each state. The data come from the CDC. The main variable I try to analysis in this post is age-adjusted death rates.
+library(tidyverse) library(jsonlite) library(fuzzyjoin) library(transformr) # devtools::install_github(&amp;quot;thomasp85/transformr&amp;quot;) library(sf) library(gganimate) library(geofacet) library(ggrepel) theme_set(theme_minimal()) death_data &amp;lt;- read_csv(&amp;quot;/Users/yifeiliu/Documents/R/data/EDA/leading_death.csv&amp;quot;) death_data &amp;lt;- death_data %&amp;gt;% dplyr::rename(year = Year, all_cause = `113 Cause Name`, cause = `Cause Name`, state = State, deaths = Deaths, aadr = `Age-adjusted Death Rate`) death_data_processed &amp;lt;- death_data %&amp;gt;% select(- all_cause) %&amp;gt;% dplyr::filter(!</description>
     </item>
     
     <item>
@@ -27,9 +27,9 @@ Pacakge and Data library(tidyverse) library(jsonlite) library(fuzzyjoin) library
       <pubDate>Thu, 01 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/analyze-u-s-census-data-using-tidycensus/</guid>
-      <description>Just fininsh Tidycensus class on Datacamp which is called Analyzing US Census Data in R so I think it will will a great opportunity for me to practice my data visualization skills.
+      <description>Just fininsh Tidycensus class on Datacamp which is called Analyzing US Census Data in R so I think now it’s a great opportunity to practice data analytical skills by analyzing data from US census.
 Show Pennsylvania Median Income You need to obtain a API code from U.S. Census and set it up in .Rprofile.
-library(tidyverse) library(tidycensus) library(ggplot2) library(purrr) library(dplyr) library(shiny) library(viridis) library(tmap) library(sf) library(plotly) # devtools::install_github(&amp;#39;thomasp85/gganimate&amp;#39;) library(gganimate) # census_api_key(key = &amp;quot;Your API Keys&amp;quot;) library(ggthemes) library(mapview) Next we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use Census Reporter to browser different categories of data.</description>
+library(tidyverse) library(tidycensus) library(ggplot2) library(purrr) library(dplyr) library(shiny) library(viridis) library(tmap) library(sf) library(plotly) library(knitr) library(kableExtra) # devtools::install_github(&amp;#39;thomasp85/gganimate&amp;#39;) library(gganimate) # census_api_key(key = &amp;quot;Your API Keys&amp;quot;) library(ggthemes) library(mapview) Next, we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use Census Reporter to browser different categories of data.</description>
     </item>
     
   </channel>

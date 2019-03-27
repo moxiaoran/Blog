@@ -17,9 +17,9 @@
       <pubDate>Thu, 01 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/analyze-u-s-census-data-using-tidycensus/</guid>
-      <description>Just fininsh Tidycensus class on Datacamp which is called Analyzing US Census Data in R so I think it will will a great opportunity for me to practice my data visualization skills.
+      <description>Just fininsh Tidycensus class on Datacamp which is called Analyzing US Census Data in R so I think now it’s a great opportunity to practice data analytical skills by analyzing data from US census.
 Show Pennsylvania Median Income You need to obtain a API code from U.S. Census and set it up in .Rprofile.
-library(tidyverse) library(tidycensus) library(ggplot2) library(purrr) library(dplyr) library(shiny) library(viridis) library(tmap) library(sf) library(plotly) # devtools::install_github(&amp;#39;thomasp85/gganimate&amp;#39;) library(gganimate) # census_api_key(key = &amp;quot;Your API Keys&amp;quot;) library(ggthemes) library(mapview) Next we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use Census Reporter to browser different categories of data.</description>
+library(tidyverse) library(tidycensus) library(ggplot2) library(purrr) library(dplyr) library(shiny) library(viridis) library(tmap) library(sf) library(plotly) library(knitr) library(kableExtra) # devtools::install_github(&amp;#39;thomasp85/gganimate&amp;#39;) library(gganimate) # census_api_key(key = &amp;quot;Your API Keys&amp;quot;) library(ggthemes) library(mapview) Next, we need to find median income data, you can use load_variables function to find the variables name that you want to find, you can also use Census Reporter to browser different categories of data.</description>
     </item>
     
   </channel>

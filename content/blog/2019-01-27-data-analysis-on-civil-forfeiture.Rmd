@@ -14,11 +14,10 @@ meta_img: /images/image.jpg
 ---
 
 
-I came across one episode of John Oliver called civil forfeiture, I find this topic quite disturbing. [Civil Forfeiture Law](https://en.wikipedia.org/wiki/Asset_forfeiture) basically give the law enforcement the right to take and keep asset regardless of the owner's guilt or innocence. I come across a website called [Policing for Profit](https://ij.org/report/policing-for-profit/) which provide data related to this topic. I have been mulling this blog post for a while, here is some result that I find out, let's take a look at see what's up!
+I came across one episode of John Oliver called civil forfeiture, I find this topic quite disturbing. [Civil Forfeiture Law](https://en.wikipedia.org/wiki/Asset_forfeiture) basically gives the law enforcement the right to take and keep asset regardless of the owner's guilt or innocence. I come across a website called [Policing for Profit](https://ij.org/report/policing-for-profit/) which provide data related to this topic. I have been mulling this blog post for a while, here is some result that I find out, let's take a look at see what's up!
 
 
 ## Where is the money?
-
 
 ```{r, message=F, warning=F}
 library(tidyverse)
@@ -43,7 +42,6 @@ library(dplyr)
 
 
 ```
-
 
 
 ```{r, message=F, warning=F}
@@ -77,7 +75,7 @@ civil_annual <- civil_us %>%
   summarize(Total = sum(ASSET_VAL, na.rm = T)) %>%
   na.omit()
 
-kable(tail(civil_annual))
+kable(tail(civil_annual)) 
 ```
 
 Here's a glance show how many money been forfeited during the last 6 years. We may see a downward trend since 2013, but that's due to *data quality* issues, not because civil forfeiture amount actually decline. 
@@ -288,10 +286,7 @@ map_forecast %>%
 
 ```
 
-
 The forecast may be a quiet unclear, here is a [clear version](https://d.pr/i/cMPq8J)
-
-
 
 
 ### Reference:
