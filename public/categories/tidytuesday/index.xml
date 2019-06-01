@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tidytuesday on Yifei Liu</title>
+    <link>/categories/tidytuesday/</link>
+    <description>Recent content in Tidytuesday on Yifei Liu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 31 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/tidytuesday/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TidyTuesday: Global Plastic Waste (Mis)Management</title>
+      <link>/blog/tidytuesday-global-plastic-waste-mis-management/</link>
+      <pubDate>Fri, 31 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/tidytuesday-global-plastic-waste-mis-management/</guid>
+      <description>After viewing the dataset, I have a couple of questions in mind. Here is the analysis code
+Which country produces the most plastic waste? I imagine it related two at least two factors, income level, and population. Generally I hypothesis the richer and more people you have, the more plastic waste your produce.  Base on this question, I think I should first plot plastic waste per person against GDP per capita, see the relationship, may need log transfer, and add population as point size.</description>
+    </item>
+    
+  </channel>
+</rss>

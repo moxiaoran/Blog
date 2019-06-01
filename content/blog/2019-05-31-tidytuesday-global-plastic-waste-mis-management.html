@@ -1,0 +1,172 @@
+---
+title: 'TidyTuesday: Global Plastic Waste (Mis)Management'
+author: Yifei Liu
+date: '2019-05-31'
+slug: tidytuesday-global-plastic-waste-mis-management
+categories:
+  - Data Visualization
+  - TidyTuesday
+tags:
+  - R
+  - Comtrade
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+
+
+<p>After viewing the dataset, I have a couple of questions in mind. Here is the analysis <a href="https://github.com/moxiaoran/EDA/blob/master/Tidy%20Tuesday/plastic_waste_analysis.Rmd">code</a></p>
+<ol style="list-style-type: decimal">
+<li>Which country produces the most plastic waste? I imagine it related two at least two factors, income level, and population. Generally I hypothesis the richer and more people you have, the more plastic waste your produce.</li>
+</ol>
+<p>Base on this question, I think I should first plot plastic waste per person against GDP per capita, see the relationship, may need log transfer, and add population as point size.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>What’s the relationship between plastic waste mismanaged, (as someone grows up in China, and see the pictures about little girls play with disposable needles), I suspect China will be on top of the list in terms of plastic waste mismanagement. And strong environmental regulation may also have an effect on this case. We can put mismanaged plastic waste per person and total mismanaged plastic waste on the map and see which country responsible for most mismanage plastic waste.</li>
+</ol>
+<p>Base on this question, I will take a similar step as last one, but maybe add few steps such as calculate individual country mismanagement waste/sum (mismanaged waste) see which country have the highest share.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>As a Finance major student/person, I remember China impose a plastic waste ban. ABC, CNBC, etc several media outlet say developed countries such as the U.S., Australia may face “recycle crisis”, PS: I always believe media overexerted circumstance. I will see if I use UN Comtrade to trace plastic waste back to their origin countries will this make the previous conclusion, without trade adjustment, any different. Also, I know Sweden burn more plastic waste than it produces, so it has to import waste, this may also be a factor.</li>
+</ol>
+<p>Get trade data from Comtrade r package, and add back to its origin.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>I lack expertise in this area, which means I believe there are a lot of important information I may not know I even needed (areas of unknown unknown)</li>
+</ol>
+<div id="income-level-and-plastic-waste-relationship" class="section level3">
+<h3>Income level and plastic waste relationship</h3>
+<p>let take a look at waste_vs_gdp.csv file, see which country generate the most plastic waste.</p>
+<p>In four three datasets, I find global plastic waste data in 2010. There is still some missing value in 2010, we can do some mutation.</p>
+<p>First, I assume there exists a relationship between plastic waste per capita and GDP per capita. Plot these two variables on a chart, see what happen.</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>This figure gives us some clear information about the relationship between GDP per capita and plastic waste per capita.</p>
+<p>we can see a clear upward trend in this plastic waste data, so I have a rough assumption, as people inside a country become richer and richer, people generate more waste. We can try to transfer these data by fitting a linear regression and mins their current data, see base their income level, which country do a better job at lower plastic waste per capita.</p>
+</div>
+<div id="adjusted-plastic-waste-for-trade" class="section level3">
+<h3>Adjusted plastic waste for trade</h3>
+<p>I also read some news about countries such as China, Thailand and India start to ban trash import. I think we can try to extract this information from UN trade package and put these trash to their original country for more accurate analysis.</p>
+<p>Let’s take a look during 2010 how much plastic waste has China imported.
+<img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre><code>## [1] &quot;13.5%&quot;</code></pre>
+<p>China import about 13.5% of plastic waste. If we want to analyze which country produces the most plastic waste and do the most environmental damage, we can adjust all these import/export back.</p>
+<p>PS: I just download these data from <a href="https://comtrade.un.org/data/">US Comtrade Database</a>, since it prohibits I download trade item cross all these import/export country</p>
+<p>Now we have global plastic waste trade data, we can join this dataset to original data and see what impact does trade have on the global plastic waste amount.</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p>we can see after adjust for import/export, rich country show more plastic waste than their original show. This could be a more accurate representation of how much plastic waste a country actually generate. And this will give us a better understanding of the impact of current China trash ban.</p>
+<p>Now since we have each country income level and average waste level, and there are clear</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="left">adjusted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-2.4062655</td>
+<td align="right">0.2044582</td>
+<td align="right">-11.768987</td>
+<td align="right">0</td>
+<td align="left">No</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_log</td>
+<td align="right">0.3797513</td>
+<td align="right">0.0503397</td>
+<td align="right">7.543767</td>
+<td align="right">0</td>
+<td align="left">No</td>
+</tr>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-2.5383912</td>
+<td align="right">0.2048000</td>
+<td align="right">-12.394489</td>
+<td align="right">0</td>
+<td align="left">Yes</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_per_log</td>
+<td align="right">0.4162704</td>
+<td align="right">0.0503118</td>
+<td align="right">8.273814</td>
+<td align="right">0</td>
+<td align="left">Yes</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">df</th>
+<th align="right">AIC</th>
+<th align="left">adjusted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.2804636</td>
+<td align="right">0.2755352</td>
+<td align="right">2</td>
+<td align="right">75.76340</td>
+<td align="left">No</td>
+</tr>
+<tr class="even">
+<td align="right">0.3237364</td>
+<td align="right">0.3190073</td>
+<td align="right">2</td>
+<td align="right">71.86691</td>
+<td align="left">Yes</td>
+</tr>
+</tbody>
+</table>
+<p>We can compare this trade adjusted waste per capita data with previous waste per capital data, we can say the linear relationship become more clear, the adjusted R value increase from 0.28 to 0.32. And (intercept) and the gdp_per_log term also changed. The upward trend is more clear this time.</p>
+<p>Now we can see which country use more plastic waste per capita relative to their GDP per capita.</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>We can see countries such as the U.S., Brazil, Pakistan, and Germany produce much more plastic waste relative to their income level. And on per capital base, Countries such as Trinidad, Guyana and Antigua and Barbuda produce more plastic waste.</p>
+<p>Now let’s put the plastic waste and plastic waste extra on a map</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+As expected, richer countries with more population produce more plastic waste.</p>
+<p>Let’s take a look at per capita plastic waste, does rich country generate have more net plastic waste</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Now after adjusted plastic waste trade, we can say which country produces more trash than it’s income level and which country produce less.</p>
+<p>Now I want to take a look at mismanage plastic waste. See Which country response of most mismanaged plastic waste. Take a look at does low-income country has highest mismanaged plastic waste and put these on map.</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>There is a problem with (Mismanaged plastic waste (tonnes)) variable in coast_vs_waste.csv, if I use this variable I got 13.8% of global mismanaged plastic waste to generate by China, but this also includes OWID_WRL which is world average. If I exclude this observation, then China share jump to 27.8%</p>
+<p>And if I use (Per capita mismanaged plastic waste (kg per day)) * population * 365 / sum(all individual numbs), China shares jump to 41.7%, I think the reason for such disparity is due to missing data, probably there are missing value in per_capita_missmaged or population cause such different. After checking the report on Ourworldindata I think I will use 27.8% method.</p>
+<p><img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>we can see the percentage of waste that is mismanaged are lower in high-income countries and higher in low-income countries, and the relationship is not linear.</p>
+<p>Let’s take a look at pre-trade adjusted mismanaged plastic waste distribution globally.
+<img src="/blog/2019-05-31-tidytuesday-global-plastic-waste-mis-management_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Let’s take a look at pre-trade adjusted mismanaged plastic waste distribution globally.</p>
+<p>And the is pre-adjusted trade data waste, we can now adjust for trade. I assume, after transfer plastic waste back, countries will use their original % of plastic waste mismanagement method to deal with this trade plastic waste.</p>
+<p>we can see if a developed country doesn’t export plastic trash to developing countries, instead of landfill domestically, it will reduce total mismanaged plastic waste by around 17.6% (if all my assumption were correct.)</p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion:</h3>
+<p>Some conclusion from analyzing this dataset.</p>
+<ul>
+<li><p>Global plastic waste production reach 270 million tons, China, U.S., and Germany are the primary produce count of more than 40% of global plastic waste. (didn’t expect Germany to be this high since European take so much about the environment)</p></li>
+<li><p>Plastic waste per person have a linear relationship with GDP per capita, after log-log transformation.</p></li>
+<li><p>China import around 8 million tons plastic waste, count for 13.5% of China total plastic waste.</p></li>
+<li><p>Sweden have a negative plastic waste number.</p></li>
+<li><p>After adjusted for plastic waste trade, the trend becomes more clear between income level and plastic waste per person. (Adjusted R increase, the trend goes up)</p></li>
+<li><p>Relationship between % of plastic waste mismanagement and GDP per capita is S-shape, most big polluter such as China, India, these Asian countries have relatively high mismanagement ratio, and most America countries recycle well relative to its income level.</p></li>
+<li><p>The primary reason developing countries such as China have massive mismanaged plastic waste is not because of import plastic waste from developed countries, but due to its internal lack of environmental regulation.</p></li>
+<li><p>If developed countries stop export plastic waste to developing countries, the world could see a rough 17% drop of mismanaged plastic waste, roughly 5.27 million tons.</p></li>
+</ul>
+<p>Some data analysis issues come across in this analysis:</p>
+<ul>
+<li><p>Missing data will screw you in a way you least expected. Be very careful will dealing with missing data.</p></li>
+<li><p>Put more attention to observation, in this case, some observers are not like others they are not countries but aggregate level such as world, OECD, Asian, North America. It could also screw you analysis.</p></li>
+</ul>
+</div>
