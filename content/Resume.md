@@ -45,7 +45,7 @@ Able to apply statistical techniques and modeling skills to analyze real word me
 
 ### 营销数据分析实习生, GILBERT INVESTMENT MANAGEMENT,  波士顿, 马萨诸塞州
 
-May 2014 – August 2014
+五月2015 – 一月2016
 
 - 准备，审查和分析财务报表，日记帐分录，分类账，现金流量表，银行对帐表。
 
