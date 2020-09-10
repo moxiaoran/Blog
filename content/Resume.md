@@ -21,41 +21,42 @@ Able to apply statistical techniques and modeling skills to analyze real word me
 
 ## Experience
 
-### Financial Analyst, Bank of China Fuxin Branch, Fuxin, China
+### 投资会计分析师, AccuSource, 切斯特县, 宾夕法尼州
 
-June 2016 – April 2017
+八月 2019 – 五月2020
 
-- Provide technical research support for Loan Operation Manager of Bank of China Fuxin Branch which serves 60 clients with $4.2 million in department budget
+- 将每日交易和现金持有量与托管银行数据进行核对。 识别和研究数据差异，在适当的地方进行调整和或根据程 序与客户沟通。
 
-- Maintained clients financial record and reported client liquidity risk to supervisor
+- 设置新账户和记录交易证券信息，并收集市场数据。
 
-- Formed a five-person team to perform technical analysis to evaluate credit risks on company and assessed liquidity of company’s collateral
+- 根据历史客户交易数据，建立可用于做市场分析和场景分析的shiny Dashboard，最终实现企业内推广和整合。 为部门会议节约了20%的时间.
 
-- Led 10 staff members to organize awareness campaigns and fundraising events on behalf of company, coordinated 5 events to educate local residents on basic financial knowledge
+- 为客户定制个人的shiny Dashboard，用于收集客户信息，建立个人账户。利用统计模型去分析客户和潜在客户 可能面临的问题或需求，缩减用户沟通时间20%，提升用户满意率10%。
 
-### Financial Analyst Intern, Bank of China Fuxin Branch,  ShengYang, China
+### 商业&数据分析师, GILBERT INVESTMENT MANAGEMENT,  波士顿, 马萨诸塞州
 
-May 2014 – August  2014
+五月2018 – 三月2019
 
-- Performed economic, industry, and financial analyses for an investment project of a financial leasing company co-founded by by Foxcode and Dahua group in Shanghai Pilot Free Trade Zone.
+- 通过使用深入的业务分析方法，为潜在的股票和投资撰写了10多篇股票研究论文； 决定投资苹果股票 52,000美元，并在6个月内赚了38,000美元。
 
-- Analyzed macroeconomic data, such as market demand and consumption growth rate, and helped project manager to select water infrastructure industry as first industry in China to invest in due to expected promising revenue growth
+- 分析过去5年的年度和季度报告中的财务信息； 进行了营销分析以支持战略计划和公司的持续业务运营，使 部门收入增长了5％。
 
-- Conducted financial ratios and cash flow analyses by using R and Excel based on financial statements to analyze liquidity , operation capability, and profitability of waterworks at each district and county in Liaoning, and decided to lease hydraulic equipment to Dalian Qingpu Drinking Water Treatment Co., Ltd.
+- 开发业务运营，数据和风险管理，将部门生产力和成本效率提高20％以上； 审查了当前的报告流程，并向首 席执行官推荐了内部和外部报告的改进和指标。
 
-
-### Financial Analyst Intern, Bank of China Fuxin Branch, ShengYang, China
+### 营销数据分析实习生, GILBERT INVESTMENT MANAGEMENT,  波士顿, 马萨诸塞州
 
 May 2014 – August 2014
 
-- Performed economic, industry, and financial analyses for an investment project of a financial leasing company
+- 准备，审查和分析财务报表，日记帐分录，分类账，现金流量表，银行对帐表。
 
-- Analyzed macroeconomic data, such as market demand and consumption growth rate, and helped project manager to select water infrastructure industry as first industry in China to invest in due to expected promising revenue growth
+- 使用Vlookups / Hlookups，索引匹配，数据透视表和宏来有效地分析和预测收入和支出，以及新投资项目的可行性
 
-- Conducted financial ratios and cash flow analyses by using R and Excel based on financial statements to analyze liquidity , operation capability, and profitability of waterworks at each district and county in Liaoning, and decided to lease hydraulic equipment to Dalian Qingpu Drinking Water Treatment Co., Ltd.
+- 通过确定商业机会并预测未来几个月的趋势，帮助企业确定动态定价，从而将部门销量提高5％。
 
 
 ## Education
 
 - Master of Science, Financial Analysis & Risk Management, May 2019 | GPA: 3.58
+Main Course: 衍生市场，金融数据科学，投资管理，应用公司金融，行为金融，定量投资组合，随机演算与金融，随机 波动率，定量风险建模
 - Bachelor of Business Administration, Finance, Statistics, May 2016
+Main Course: 财务分析，金融机构管理，投资分析，投资组合管理，衍生产品和金融风险管理，财务报表分析，金融机构 管理，中级企业融资，国际金融，投资组合管理
